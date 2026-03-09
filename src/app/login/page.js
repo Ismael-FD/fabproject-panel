@@ -4,93 +4,156 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import { setToken } from "@/lib/auth";
+import { Bot, ArrowRight, Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
-    const router = useRouter();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        setError("");
-        setLoading(true);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      const response = await api.post("/auth/login", { email, password });
+      if (response.data?.token) {
+        setToken(response.data.token);
+        router.push("/dashboard");
+      } else {
+        setError("Respuesta inválida del servidor");
+      }
+    } catch (err) {
+      setError(err.response?.data?.error || "Credenciales incorrectas. Verificá tus datos.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        try {
-            const response = await api.post("/auth/login", { email, password });
-            if (response.data && response.data.token) {
-                setToken(response.data.token);
-                router.push("/dashboard");
-            } else {
-                setError("Respuesta inválida del servidor");
-            }
-        } catch (err) {
-            setError(
-                err.response?.data?.error || "Error al iniciar sesión. Verifica tus credenciales."
-            );
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                <div>
-                    <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 tracking-tight">
-                        FabProject<span className="text-blue-600">.</span>
-                    </h2>
-                    <p className="mt-2 text-center text-sm text-gray-600">
-                        Ingresa al panel de administración
-                    </p>
-                </div>
-                <form className="mt-8 space-y-6" onSubmit={handleLogin}>
-                    <div className="rounded-md shadow-sm space-y-4">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Correo electrónico
-                            </label>
-                            <input
-                                type="email"
-                                required
-                                className="appearance-none rounded-xl relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm transition-colors"
-                                placeholder="admin@test.com"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Contraseña
-                            </label>
-                            <input
-                                type="password"
-                                required
-                                className="appearance-none rounded-xl relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm transition-colors"
-                                placeholder="••••••"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </div>
-                    </div>
-
-                    {error && (
-                        <div className="text-red-500 text-sm mt-2 text-center font-medium bg-red-50 p-3 rounded-lg border border-red-100">{error}</div>
-                    )}
-
-                    <div>
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all ${loading ? "opacity-70 cursor-not-allowed" : "shadow-md hover:shadow-lg"
-                                }`}
-                        >
-                            {loading ? "Ingresando..." : "Ingresar"}
-                        </button>
-                    </div>
-                </form>
-            </div>
+  return (
+    <div className="min-h-screen flex bg-neutral-50">
+      {/* Panel izquierdo — branding */}
+      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 bg-white border-r border-neutral-200 relative overflow-hidden">
+        {/* Fondo decorativo */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-[-120px] left-[-120px] w-[480px] h-[480px] rounded-full bg-blue-100/30 blur-[100px]" />
+          <div className="absolute bottom-[-80px] right-[-80px] w-[320px] h-[320px] rounded-full bg-blue-50/40 blur-[80px]" />
+          {/* Grid sutil */}
+          <div className="absolute inset-0 opacity-[0.03]"
+            style={{ backgroundImage: "linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
         </div>
-    );
+
+        <div className="relative z-10">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-550 to-blue-600 flex items-center justify-center shadow-apple">
+              <Bot className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <span className="text-neutral-900 font-bold text-xl tracking-tight">FabProject</span>
+              <p className="text-neutral-500 text-xs font-medium">Panel de Control</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative z-10">
+          <h1 className="text-5xl font-bold text-neutral-900 leading-tight tracking-tight">
+            Tu restaurante,<br />
+            <span className="text-blue-600">automatizado</span><br />
+            con IA.
+          </h1>
+          <p className="text-neutral-600 mt-6 text-lg leading-relaxed max-w-sm">
+            Gestioná pedidos, menú y configuración desde un único panel. Tu asistente de WhatsApp trabaja 24/7.
+          </p>
+        </div>
+
+        <div className="relative z-10 flex items-center gap-4">
+          <div className="flex -space-x-3">
+            {["#3b82f6","#10b981","#f59e0b"].map((c,i) => (
+              <div key={i} className="w-10 h-10 rounded-full border-2 border-white shadow-apple" style={{backgroundColor: c}} />
+            ))}
+          </div>
+          <p className="text-neutral-500 text-sm font-medium">Más de 30 restaurantes confían en FabProject</p>
+        </div>
+      </div>
+
+      {/* Panel derecho — formulario */}
+      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-neutral-50">
+        <div className="w-full max-w-md">
+          {/* Logo mobile */}
+          <div className="flex items-center gap-3 mb-10 lg:hidden">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-550 to-blue-600 flex items-center justify-center shadow-apple">
+              <Bot className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <span className="text-neutral-900 font-bold text-xl tracking-tight">FabProject</span>
+              <p className="text-neutral-500 text-xs font-medium">Panel de Control</p>
+            </div>
+          </div>
+
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-neutral-900 tracking-tight">Bienvenido de vuelta</h1>
+            <p className="text-neutral-500 mt-2">Ingresá con tu cuenta del panel.</p>
+          </div>
+
+          <div className="bg-white rounded-3xl shadow-apple-lg p-8">
+            <form onSubmit={handleLogin} className="space-y-6">
+              <div>
+                <label className="block text-sm font-semibold text-neutral-700 mb-2">Email</label>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="admin@mirestaurante.com"
+                  className="w-full px-4 py-3 rounded-2xl bg-neutral-50 border border-neutral-200 text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-neutral-700 mb-2">Contraseña</label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full px-4 py-3 rounded-2xl bg-neutral-50 border border-neutral-200 text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 pr-12"
+                  />
+                  <button 
+                    type="button" 
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 transition-colors p-1"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {error && (
+                <div className="p-4 rounded-2xl bg-error-50 border border-error-200 text-error-700 text-sm font-medium animate-slide-up">
+                  {error}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-gradient-to-r from-blue-550 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold text-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-apple hover:shadow-apple-lg transform hover:scale-[1.02] active:scale-[0.98]"
+              >
+                {loading ? (
+                  <div className="w-5 h-5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                ) : (
+                  <>Ingresar al Panel <ArrowRight className="w-4 h-4" /></>
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
