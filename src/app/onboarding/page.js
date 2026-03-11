@@ -3,7 +3,7 @@
 import { useState } from "react";
 import React from "react";
 import api from "@/lib/api";
-import { Store, Bot, CheckCircle2, AlertCircle, ArrowRight, ArrowLeft, Sparkles } from "lucide-react";
+import { Store, Bot, CheckCircle2, AlertCircle, ArrowRight, ArrowLeft, Sparkles, Users } from "lucide-react";
 
 function Field({ label, name, value, onChange, type = "text", disabled = false, placeholder = "", hint = "", required = false }) {
   return (
