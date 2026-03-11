@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Providers } from "./providers";
 
 export const metadata = {
   title: "FaChat",
@@ -12,7 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="bg-gray-900 text-white antialiased font-sans">{children}</body>
+      <body className="bg-gray-900 text-white antialiased font-sans">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

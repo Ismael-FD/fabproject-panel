@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import { setToken } from "@/lib/auth";
-import { Bot, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { ArrowRight, Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -49,7 +49,7 @@ export default function LoginPage() {
         <div className="relative z-10">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-550 to-blue-600 flex items-center justify-center shadow-apple">
-              <Bot className="w-5 h-5 text-white" />
+              <span className="text-white font-bold text-sm">FC</span>
             </div>
             <div>
               <span className="text-white font-bold text-xl tracking-tight">FaChat</span>
@@ -85,7 +85,7 @@ export default function LoginPage() {
           {/* Logo mobile */}
           <div className="flex items-center gap-3 mb-10 lg:hidden">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-550 to-blue-600 flex items-center justify-center shadow-apple">
-              <Bot className="w-5 h-5 text-white" />
+              <span className="text-white font-bold text-sm">FC</span>
             </div>
             <div>
               <span className="text-white font-bold text-xl tracking-tight">FaChat</span>

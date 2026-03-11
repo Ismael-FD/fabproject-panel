@@ -1,0 +1,10 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#0f172a"/>
+  
+  <!-- F -->
+  <path d="M 50 60 L 50 140 M 50 60 L 90 60 M 50 95 L 85 95" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  
+  <!-- C -->
+  <path d="M 150 60 Q 130 60 130 100 Q 130 140 150 140" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

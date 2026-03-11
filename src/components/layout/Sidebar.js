@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { removeToken } from "@/lib/auth";
 import { useEffect, useState } from "react";
-import api from "@/lib/api";
+import { useRestaurante } from "@/lib/RestauranteContext";
 
 const navigation = [
   { name: "Dashboard",     href: "/dashboard",     icon: LayoutDashboard },
@@ -28,15 +28,18 @@ const navigation = [
 
 export default function Sidebar({ isOpen, onClose }) {
   const pathname = usePathname();
-  const [restaurante, setRestaurante] = useState(null);
+  const { restaurante, updateTrigger } = useRestaurante();
   const [botOnline, setBotOnline] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    api.get("/restaurantes/mi-restaurante")
-      .then(r => { setRestaurante(r.data); setBotOnline(true); })
-      .catch(() => setBotOnline(false));
-  }, []);
+    // Determinar si el bot está online basado en si existe nombre_bot
+    if (restaurante?.nombre_bot) {
+      setBotOnline(true);
+    } else {
+      setBotOnline(false);
+    }
+  }, [restaurante?.nombre_bot, updateTrigger]);
 
   const handleLogout = () => {
     removeToken();
@@ -76,7 +79,7 @@ export default function Sidebar({ isOpen, onClose }) {
       <div className={`px-4 py-6 border-b border-gray-700 flex items-center ${isExpanded ? 'justify-start' : 'justify-center'}`}>
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-lg border border-blue-500/20 flex-shrink-0">
-            <span className="text-white font-bold text-lg">F</span>
+            <span className="text-white font-bold text-sm">FC</span>
           </div>
           {isExpanded && (
             <div className="overflow-hidden">
@@ -92,16 +95,16 @@ export default function Sidebar({ isOpen, onClose }) {
         <div className="px-4 py-5 border-b border-gray-700 bg-gradient-to-r from-gray-800/50 to-transparent">
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center flex-shrink-0 shadow-lg border border-blue-500/30">
-              <span className="text-white font-bold text-sm">{initials}</span>
+              <Bot className="w-5 h-5 text-white" />
             </div>
             <div className="min-w-0 flex-1 overflow-hidden">
-              <p className="text-white text-sm font-semibold truncate">{restaurante.nombre}</p>
+              <p className="text-white text-sm font-semibold truncate">{restaurante.nombre_bot || "Sin nombre"}</p>
               <p className="text-gray-400 text-xs truncate">{restaurante.email}</p>
               <div className="flex items-center gap-2 mt-2">
                 {botOnline ? (
                   <>
                     <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse-soft"></div>
-                    <span className="text-green-400 text-xs font-medium whitespace-nowrap">Bot activo</span>
+                    <span className="text-green-400 text-xs font-medium">Activo</span>
                   </>
                 ) : (
                   <>

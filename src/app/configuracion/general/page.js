@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import PanelLayout from "@/components/layout/PanelLayout";
 import api from "@/lib/api";
+import { useRestaurante } from "@/lib/RestauranteContext";
 import { Save, Store, Clock, CheckCircle2, AlertCircle, CreditCard } from "lucide-react";
 
 function Field({ label, name, value, onChange, type = "text", disabled = false, placeholder = "", hint = "" }) {
@@ -42,6 +43,7 @@ function Section({ icon: Icon, title, accent = false, children }) {
 }
 
 export default function ConfiguracionGeneralPage() {
+  const { restaurante, loading: ctxLoading, updateRestaurante } = useRestaurante();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
@@ -53,11 +55,11 @@ export default function ConfiguracionGeneralPage() {
   });
 
   useEffect(() => {
-    api.get("/restaurantes/mi-restaurante")
-      .then(r => setConfig(r.data))
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
+    if (restaurante) {
+      setConfig(restaurante);
+      setLoading(false);
+    }
+  }, [restaurante]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,6 +73,8 @@ export default function ConfiguracionGeneralPage() {
 
     try {
       await api.put("/restaurantes/mi-restaurante", config);
+      // Actualizar el contexto global con los nuevos datos
+      updateRestaurante(config);
       setMessage({ type: "success", text: "Configuración guardada correctamente" });
       setTimeout(() => setMessage({ type: "", text: "" }), 3000);
     } catch {
@@ -80,7 +84,7 @@ export default function ConfiguracionGeneralPage() {
     }
   };
 
-  if (loading) {
+  if (loading || ctxLoading) {
     return (
       <PanelLayout>
         <div className="flex h-[60vh] items-center justify-center">

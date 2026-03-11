@@ -9,17 +9,43 @@ import { Menu } from "lucide-react";
 
 export default function PanelLayout({ children }) {
     const router = useRouter();
-    const isAuth = isAuthenticated();
+    const [isAuth, setIsAuth] = useState(false);
+    const [mounted, setMounted] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     useEffect(() => {
-        // Redirect only on the client once we know the auth status.
-        if (!isAuth) {
+        // Check auth status after mounting
+        const authStatus = isAuthenticated();
+        setIsAuth(authStatus);
+        setMounted(true);
+        
+        // Redirect if not authenticated
+        if (!authStatus) {
             router.push("/login");
         }
-    }, [isAuth, router]);
+    }, [router]);
 
     // Prevent flash of unauthenticated content
+    if (!mounted) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-900">
+                <div className="w-full max-w-7xl mx-auto p-6 space-y-6">
+                    <div className="flex items-center gap-4">
+                        <Skeleton className="w-16 h-16 rounded-2xl" />
+                        <Skeleton className="w-48 h-8 rounded-lg" />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <Skeleton className="h-24 rounded-2xl" />
+                        <Skeleton className="h-24 rounded-2xl" />
+                        <Skeleton className="h-24 rounded-2xl" />
+                        <Skeleton className="h-24 rounded-2xl" />
+                    </div>
+                    <Skeleton className="h-64 rounded-2xl" />
+                </div>
+            </div>
+        );
+    }
+
     if (!isAuth) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-900">

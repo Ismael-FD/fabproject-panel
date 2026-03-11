@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import PanelLayout from "@/components/layout/PanelLayout";
 import api from "@/lib/api";
+import { useRestaurante } from "@/lib/RestauranteContext";
 import { Save, Bot, CheckCircle2, AlertCircle } from "lucide-react";
 
 function Field({ label, name, value, onChange, type = "text", disabled = false, placeholder = "", hint = "" }) {
@@ -42,6 +43,7 @@ function Section({ icon: Icon, title, accent = false, children }) {
 }
 
 export default function ConfiguracionIAPage() {
+  const { restaurante, loading: ctxLoading, updateRestaurante } = useRestaurante();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
@@ -50,14 +52,14 @@ export default function ConfiguracionIAPage() {
   });
 
   useEffect(() => {
-    api.get("/restaurantes/mi-restaurante")
-      .then(r => setConfig({
-        nombre_bot: r.data.nombre_bot || "",
-        tono_bot: r.data.tono_bot || ""
-      }))
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
+    if (restaurante) {
+      setConfig({
+        nombre_bot: restaurante.nombre_bot || "",
+        tono_bot: restaurante.tono_bot || ""
+      });
+      setLoading(false);
+    }
+  }, [restaurante]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,6 +73,8 @@ export default function ConfiguracionIAPage() {
 
     try {
       await api.put("/restaurantes/mi-restaurante", config);
+      // Actualizar el contexto global con los nuevos datos
+      updateRestaurante(config);
       setMessage({ type: "success", text: "Configuración de IA guardada correctamente" });
       setTimeout(() => setMessage({ type: "", text: "" }), 3000);
     } catch {
@@ -80,7 +84,7 @@ export default function ConfiguracionIAPage() {
     }
   };
 
-  if (loading) {
+  if (loading || ctxLoading) {
     return (
       <PanelLayout>
         <div className="flex h-[60vh] items-center justify-center">

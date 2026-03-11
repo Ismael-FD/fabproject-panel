@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Sparkles, Bot, Store, Clock, CreditCard, Shield, Zap, CheckCircle2, Star, TrendingUp } from "lucide-react";
+import { ArrowRight, Bot, Store, Clock, CreditCard, Shield, Zap, CheckCircle2, Star, TrendingUp } from "lucide-react";
 
 export default function LandingPage() {
   return (
@@ -12,7 +12,7 @@ export default function LandingPage() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-apple">
-                <Sparkles className="w-5 h-5 text-white" />
+                <span className="text-white font-bold text-sm">FC</span>
               </div>
               <span className="text-xl font-bold text-white">FaChat</span>
             </div>
@@ -312,7 +312,7 @@ export default function LandingPage() {
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-white" />
+                  <span className="text-white font-bold text-sm">FC</span>
                 </div>
                 <span className="text-xl font-bold text-white">FaChat</span>
               </div>
