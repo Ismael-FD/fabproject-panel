@@ -202,3 +202,9 @@
     }
   }
 }
+/* Recharts: ensure chart backgrounds stay transparent (fits dark dashboard cards) */
+@layer utilities {
+  .recharts-wrapper, .recharts-surface {
+    background: transparent !important;
+  }
+}

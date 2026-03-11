@@ -34,16 +34,16 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex bg-neutral-50">
+    <div className="min-h-screen flex bg-gray-900">
       {/* Panel izquierdo — branding */}
-      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 bg-white border-r border-neutral-200 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 bg-gray-800 border-r border-gray-700 relative overflow-hidden">
         {/* Fondo decorativo */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-[-120px] left-[-120px] w-[480px] h-[480px] rounded-full bg-blue-100/30 blur-[100px]" />
-          <div className="absolute bottom-[-80px] right-[-80px] w-[320px] h-[320px] rounded-full bg-blue-50/40 blur-[80px]" />
+          <div className="absolute top-[-120px] left-[-120px] w-[480px] h-[480px] rounded-full bg-blue-900/20 blur-[100px]" />
+          <div className="absolute bottom-[-80px] right-[-80px] w-[320px] h-[320px] rounded-full bg-blue-800/20 blur-[80px]" />
           {/* Grid sutil */}
           <div className="absolute inset-0 opacity-[0.03]"
-            style={{ backgroundImage: "linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
+            style={{ backgroundImage: "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
         </div>
 
         <div className="relative z-10">
@@ -52,19 +52,19 @@ export default function LoginPage() {
               <Bot className="w-5 h-5 text-white" />
             </div>
             <div>
-              <span className="text-neutral-900 font-bold text-xl tracking-tight">FabProject</span>
-              <p className="text-neutral-500 text-xs font-medium">Panel de Control</p>
+              <span className="text-white font-bold text-xl tracking-tight">FabProject</span>
+              <p className="text-gray-400 text-xs font-medium">Panel de Control</p>
             </div>
           </div>
         </div>
 
         <div className="relative z-10">
-          <h1 className="text-5xl font-bold text-neutral-900 leading-tight tracking-tight">
+          <h1 className="text-5xl font-bold text-white leading-tight tracking-tight">
             Tu restaurante,<br />
-            <span className="text-blue-600">automatizado</span><br />
+            <span className="text-blue-400">automatizado</span><br />
             con IA.
           </h1>
-          <p className="text-neutral-600 mt-6 text-lg leading-relaxed max-w-sm">
+          <p className="text-gray-400 mt-6 text-lg leading-relaxed max-w-sm">
             Gestioná pedidos, menú y configuración desde un único panel. Tu asistente de WhatsApp trabaja 24/7.
           </p>
         </div>
@@ -72,15 +72,15 @@ export default function LoginPage() {
         <div className="relative z-10 flex items-center gap-4">
           <div className="flex -space-x-3">
             {["#3b82f6","#10b981","#f59e0b"].map((c,i) => (
-              <div key={i} className="w-10 h-10 rounded-full border-2 border-white shadow-apple" style={{backgroundColor: c}} />
+              <div key={i} className="w-10 h-10 rounded-full border-2 border-gray-800 shadow-apple" style={{backgroundColor: c}} />
             ))}
           </div>
-          <p className="text-neutral-500 text-sm font-medium">Más de 30 restaurantes confían en FabProject</p>
+          <p className="text-gray-400 text-sm font-medium">Más de 30 restaurantes confían en FabProject</p>
         </div>
       </div>
 
       {/* Panel derecho — formulario */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-neutral-50">
+      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-gray-900">
         <div className="w-full max-w-md">
           {/* Logo mobile */}
           <div className="flex items-center gap-3 mb-10 lg:hidden">
@@ -88,32 +88,32 @@ export default function LoginPage() {
               <Bot className="w-5 h-5 text-white" />
             </div>
             <div>
-              <span className="text-neutral-900 font-bold text-xl tracking-tight">FabProject</span>
-              <p className="text-neutral-500 text-xs font-medium">Panel de Control</p>
+              <span className="text-white font-bold text-xl tracking-tight">FabProject</span>
+              <p className="text-gray-400 text-xs font-medium">Panel de Control</p>
             </div>
           </div>
 
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-neutral-900 tracking-tight">Bienvenido de vuelta</h1>
-            <p className="text-neutral-500 mt-2">Ingresá con tu cuenta del panel.</p>
+            <h1 className="text-3xl font-bold text-white tracking-tight">Bienvenido de vuelta</h1>
+            <p className="text-gray-400 mt-2">Ingresá con tu cuenta del panel.</p>
           </div>
 
-          <div className="bg-white rounded-3xl shadow-apple-lg p-8">
+          <div className="bg-gray-800 rounded-3xl shadow-apple-lg p-8 border border-gray-700">
             <form onSubmit={handleLogin} className="space-y-6">
               <div>
-                <label className="block text-sm font-semibold text-neutral-700 mb-2">Email</label>
+                <label className="block text-sm font-semibold text-gray-300 mb-2">Email</label>
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@mirestaurante.com"
-                  className="w-full px-4 py-3 rounded-2xl bg-neutral-50 border border-neutral-200 text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200"
+                  className="w-full px-4 py-3 rounded-2xl bg-gray-800 border border-gray-700 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-neutral-700 mb-2">Contraseña</label>
+                <label className="block text-sm font-semibold text-gray-300 mb-2">Contraseña</label>
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
@@ -121,12 +121,12 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full px-4 py-3 rounded-2xl bg-neutral-50 border border-neutral-200 text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 pr-12"
+                    className="w-full px-4 py-3 rounded-2xl bg-gray-800 border border-gray-700 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 pr-12"
                   />
                   <button 
                     type="button" 
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 transition-colors p-1"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors p-1"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -134,7 +134,7 @@ export default function LoginPage() {
               </div>
 
               {error && (
-                <div className="p-4 rounded-2xl bg-error-50 border border-error-200 text-error-700 text-sm font-medium animate-slide-up">
+                <div className="p-4 rounded-2xl bg-red-900/30 border border-red-700 text-red-300 text-sm font-medium animate-slide-up">
                   {error}
                 </div>
               )}

@@ -1,8 +1,19 @@
 import axios from 'axios';
 import { getToken, removeToken } from './auth';
 
+// Estas URLs vienen del backend documentado. Cambia la variable de entorno
+// NEXT_PUBLIC_API_URL en caso de que use un ngrok distinto (se requiere reiniciar el servidor de Next.js).
+export const DEFAULT_API_URL = "https://manlessly-unparadoxal-leeann.ngrok-free.dev";
+
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_URL;
+
+if (!process.env.NEXT_PUBLIC_API_URL) {
+  // Solo para desarrollo: alerta si no se especificó variable de entorno.
+  console.warn("NEXT_PUBLIC_API_URL no está definida. Usando DEFAULT_API_URL:", API_BASE_URL);
+}
+
 const api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
+    baseURL: API_BASE_URL,
     headers: {
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': 'true'
