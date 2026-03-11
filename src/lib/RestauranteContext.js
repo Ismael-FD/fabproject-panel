@@ -1,5 +1,6 @@
-import { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import api from "@/lib/api";
+import { isAuthenticated } from "@/lib/auth";
 
 const RestauranteContext = createContext();
 
@@ -21,6 +22,11 @@ export function RestauranteProvider({ children }) {
 
   useEffect(() => {
     const initializeRestaurante = async () => {
+      if (!isAuthenticated()) {
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
       await fetchRestaurante();
       setLoading(false);
