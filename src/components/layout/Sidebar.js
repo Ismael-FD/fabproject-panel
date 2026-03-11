@@ -80,7 +80,7 @@ export default function Sidebar({ isOpen, onClose }) {
           </div>
           {isExpanded && (
             <div className="overflow-hidden">
-              <span className="text-white font-bold text-lg tracking-tight whitespace-nowrap">{restaurante?.nombre || "FabProject"}</span>
+              <span className="text-white font-bold text-lg tracking-tight whitespace-nowrap">{restaurante?.nombre || "FaChat"}</span>
               <p className="text-gray-400 text-xs font-medium whitespace-nowrap">Panel de Control</p>
             </div>
           )}

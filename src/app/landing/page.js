@@ -14,7 +14,7 @@ export default function LandingPage() {
               <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-apple">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-white">FabProject</span>
+              <span className="text-xl font-bold text-white">FaChat</span>
             </div>
             <nav className="hidden md:flex items-center gap-8">
               <a href="#features" className="text-gray-400 hover:text-white transition-colors">Características</a>
@@ -314,7 +314,7 @@ export default function LandingPage() {
                 <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-xl font-bold text-white">FabProject</span>
+                <span className="text-xl font-bold text-white">FaChat</span>
               </div>
               <p className="text-gray-400 leading-relaxed max-w-md">
                 Transformamos restaurantes con inteligencia artificial. 
@@ -342,7 +342,7 @@ export default function LandingPage() {
           </div>
           
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
-            <p>&copy; 2024 FabProject. Todos los derechos reservados.</p>
+            <p>&copy; 2024 FaChat. Todos los derechos reservados.</p>
           </div>
         </div>
       </footer>

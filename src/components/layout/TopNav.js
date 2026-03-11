@@ -10,7 +10,7 @@ export default function TopNav({ onToggleSidebar, isSidebarOpen }) {
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
             <span className="text-white font-bold text-sm">F</span>
           </div>
-          <span className="text-slate-900 font-semibold">FabProject</span>
+          <span className="text-slate-900 font-semibold">FaChat</span>
         </div>
         <button
           onClick={onToggleSidebar}

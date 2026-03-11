@@ -52,7 +52,7 @@ export default function LoginPage() {
               <Bot className="w-5 h-5 text-white" />
             </div>
             <div>
-              <span className="text-white font-bold text-xl tracking-tight">FabProject</span>
+              <span className="text-white font-bold text-xl tracking-tight">FaChat</span>
               <p className="text-gray-400 text-xs font-medium">Panel de Control</p>
             </div>
           </div>
@@ -75,7 +75,7 @@ export default function LoginPage() {
               <div key={i} className="w-10 h-10 rounded-full border-2 border-gray-800 shadow-apple" style={{backgroundColor: c}} />
             ))}
           </div>
-          <p className="text-gray-400 text-sm font-medium">Más de 30 restaurantes confían en FabProject</p>
+          <p className="text-gray-400 text-sm font-medium">Más de 30 restaurantes confían en FaChat</p>
         </div>
       </div>
 
@@ -88,7 +88,7 @@ export default function LoginPage() {
               <Bot className="w-5 h-5 text-white" />
             </div>
             <div>
-              <span className="text-white font-bold text-xl tracking-tight">FabProject</span>
+              <span className="text-white font-bold text-xl tracking-tight">FaChat</span>
               <p className="text-gray-400 text-xs font-medium">Panel de Control</p>
             </div>
           </div>

@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "FabProject Panel",
-  description: "Panel de administración para FabProject",
+  title: "FaChat",
+  description: "Panel de administración para FaChat",
 };
 
 export default function RootLayout({
