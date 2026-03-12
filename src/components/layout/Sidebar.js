@@ -55,7 +55,7 @@ export default function Sidebar({ isOpen, onClose }) {
       {/* Overlay mobile */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => onClose?.()}
         />
       )}
@@ -67,11 +67,11 @@ export default function Sidebar({ isOpen, onClose }) {
         className={`
           fixed left-4 top-4 bottom-4 z-50
           flex flex-col
-          bg-gradient-to-b from-gray-800 to-gray-900
-          rounded-3xl border border-gray-700/80
-          shadow-2xl backdrop-blur-sm
+          bg-gray-900
+          rounded-3xl border border-gray-700/60
+          shadow-lg
           overflow-hidden
-          transition-all duration-300 ease-in-out
+          transition-[width] duration-300 ease-in-out
           ${expanded ? "w-64" : "w-16"}
           ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}
@@ -96,7 +96,7 @@ export default function Sidebar({ isOpen, onClose }) {
 
         {/* Info del bot — solo cuando expandido */}
         {expanded && restaurante && (
-          <div className="px-4 py-4 border-b border-gray-700 bg-gradient-to-r from-gray-800/50 to-transparent flex-shrink-0 overflow-hidden">
+          <div className="px-4 py-4 border-b border-gray-700 bg-gray-800/40 flex-shrink-0 overflow-hidden">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 min-w-[2.25rem] rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center">
                 <Bot className="w-4 h-4 text-blue-400" />
@@ -137,10 +137,10 @@ export default function Sidebar({ isOpen, onClose }) {
                   title={!expanded ? item.name : undefined}
                   className={`
                     flex items-center h-11 rounded-2xl px-3 gap-3
-                    transition-all duration-200 whitespace-nowrap overflow-hidden
+                    transition-colors duration-150 whitespace-nowrap overflow-hidden
                     ${active
-                      ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg border border-blue-500/50"
-                      : "text-gray-300 hover:text-white hover:bg-gray-700"}
+                      ? "bg-blue-600 text-white"
+                      : "text-gray-400 hover:text-white hover:bg-white/10"}
                   `}
                 >
                   <Icon className={`h-5 w-5 min-w-[1.25rem] flex-shrink-0 ${active ? "text-white" : "text-gray-400"}`} />
@@ -164,7 +164,7 @@ export default function Sidebar({ isOpen, onClose }) {
                           href={sub.href}
                           onClick={() => onClose?.()}
                           className={`
-                            flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all
+                            flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-colors duration-150
                             ${subActive
                               ? "bg-blue-600/25 text-blue-300 font-medium"
                               : "text-gray-400 hover:text-gray-200 hover:bg-gray-700/50"}
@@ -190,7 +190,7 @@ export default function Sidebar({ isOpen, onClose }) {
           <button
             onClick={handleLogout}
             title={!expanded ? "Cerrar sesión" : undefined}
-            className="flex items-center h-11 w-full rounded-2xl px-3 gap-3 text-gray-400 hover:text-red-400 hover:bg-red-900/30 transition-all duration-200 whitespace-nowrap overflow-hidden"
+            className="flex items-center h-11 w-full rounded-2xl px-3 gap-3 text-gray-400 hover:text-red-300 hover:bg-red-600/20 transition-colors duration-150 whitespace-nowrap overflow-hidden"
           >
             <LogOut className="h-5 w-5 min-w-[1.25rem] flex-shrink-0" />
             {expanded && <span className="text-sm font-medium">Cerrar sesión</span>}
