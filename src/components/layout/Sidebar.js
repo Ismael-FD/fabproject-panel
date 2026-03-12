@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, ShoppingCart, MenuSquare,
   Settings, LogOut, Bot, User, Store,
+  UtensilsCrossed,
 } from "lucide-react";
 import { removeToken } from "@/lib/auth";
 import { useEffect, useState } from "react";
@@ -14,31 +15,26 @@ const navigation = [
   { name: "Dashboard",     href: "/dashboard",     icon: LayoutDashboard },
   { name: "Pedidos",       href: "/pedidos",       icon: ShoppingCart },
   { name: "Menú",          href: "/menu",          icon: MenuSquare },
-  { 
-    name: "Configuración", 
-    href: "/configuracion", 
+  {
+    name: "Configuración",
+    href: "/configuracion",
     icon: Settings,
     subItems: [
-      { name: "General", href: "/configuracion/general", icon: Store },
-      { name: "Asistente IA", href: "/configuracion/ia", icon: Bot },
-    ]
+      { name: "General",      href: "/configuracion/general", icon: Store },
+      { name: "Asistente IA", href: "/configuracion/ia",      icon: Bot   },
+    ],
   },
-  { name: "Perfil",        href: "/perfil",        icon: User },
+  { name: "Perfil", href: "/perfil", icon: User },
 ];
 
 export default function Sidebar({ isOpen, onClose }) {
   const pathname = usePathname();
   const { restaurante, updateTrigger } = useRestaurante();
-  const [botOnline, setBotOnline] = useState(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const [botOnline, setBotOnline]     = useState(false);
+  const [hovered,   setHovered]       = useState(false);
 
   useEffect(() => {
-    // Determinar si el bot está online basado en si existe nombre_bot
-    if (restaurante?.nombre_bot) {
-      setBotOnline(true);
-    } else {
-      setBotOnline(false);
-    }
+    setBotOnline(!!restaurante?.nombre_bot);
   }, [restaurante?.nombre_bot, updateTrigger]);
 
   const handleLogout = () => {
@@ -46,131 +42,136 @@ export default function Sidebar({ isOpen, onClose }) {
     window.location.href = "/login";
   };
 
-  const initials = restaurante?.nombre
-    ? restaurante.nombre.split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase()
-    : "FP";
+  // Expandido si hover en desktop O abierto en mobile
+  const expanded = hovered || isOpen;
 
-  const isExpanded = isHovered || isOpen;
-  // Mobile: hidden when closed, full width when open.
-  // Desktop: small (w-20) and expands on hover (w-64).
-  const widthClass = isOpen
-    ? "w-72 lg:w-64"
-    : "w-0 lg:w-20 lg:hover:w-64";
+  const isActive = (href) => {
+    if (href === "/configuracion") return pathname.startsWith("/configuracion");
+    return pathname === href;
+  };
 
   return (
     <>
-      {/* Mobile overlay */}
+      {/* Overlay mobile */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => onClose?.()}
         />
       )}
-      
-      <div 
-        className={`flex flex-col bg-gradient-to-b from-gray-800 to-gray-900 h-[calc(100vh-2rem)] shadow-2xl transition-all duration-500 ease-in-out fixed left-4 top-4 bottom-4 rounded-3xl border border-gray-700/80 backdrop-blur-sm z-50 overflow-hidden ${
-          widthClass
-        } ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        data-sidebar-hovered={isHovered}
-      >
-      {/* Logo */}
-      <div className={`px-4 py-6 border-b border-gray-700 flex items-center ${isExpanded ? 'justify-start' : 'justify-center'}`}>
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-lg border border-blue-500/20 flex-shrink-0">
-            <span className="text-white font-bold text-sm">FC</span>
-          </div>
-          {isExpanded && (
-            <div className="overflow-hidden">
-              <span className="text-white font-bold text-lg tracking-tight whitespace-nowrap">{restaurante?.nombre || "FaChat"}</span>
-              <p className="text-gray-400 text-xs font-medium whitespace-nowrap">Panel de Control</p>
-            </div>
-          )}
-        </div>
-      </div>
 
-      {/* Info restaurante */}
-      {restaurante && isExpanded && (
-        <div className="px-4 py-5 border-b border-gray-700 bg-gradient-to-r from-gray-800/50 to-transparent">
-          <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center flex-shrink-0 shadow-lg border border-blue-500/30">
-              <Bot className="w-5 h-5 text-white" />
+      {/* Sidebar */}
+      <div
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className={`
+          fixed left-4 top-4 bottom-4 z-50
+          flex flex-col
+          bg-gradient-to-b from-gray-800 to-gray-900
+          rounded-3xl border border-gray-700/80
+          shadow-2xl backdrop-blur-sm
+          overflow-hidden
+          transition-all duration-300 ease-in-out
+          ${expanded ? "w-64" : "w-16"}
+          ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+        `}
+      >
+        {/* Logo */}
+        <div className="flex items-center h-20 px-3 border-b border-gray-700 flex-shrink-0 overflow-hidden">
+          <div className="flex items-center gap-3">
+            {/* Icono restaurante */}
+            <div className="w-10 h-10 min-w-[2.5rem] rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-lg border border-blue-500/20 flex-shrink-0">
+              <UtensilsCrossed className="w-5 h-5 text-white" />
             </div>
-            <div className="min-w-0 flex-1 overflow-hidden">
-              <p className="text-white text-sm font-semibold truncate">{restaurante.nombre_bot || "Sin nombre"}</p>
-              <p className="text-gray-400 text-xs truncate">{restaurante.email}</p>
-              <div className="flex items-center gap-2 mt-2">
-                {botOnline ? (
-                  <>
-                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse-soft"></div>
-                    <span className="text-green-400 text-xs font-medium">Activo</span>
-                  </>
-                ) : (
-                  <>
-                    <div className="w-2 h-2 rounded-full bg-red-500"></div>
-                    <span className="text-red-400 text-xs font-medium whitespace-nowrap">Sin conexión</span>
-                  </>
-                )}
+            {expanded && (
+              <div className="overflow-hidden">
+                <span className="text-white font-bold text-base tracking-tight whitespace-nowrap block">
+                  {restaurante?.nombre || "FabProject"}
+                </span>
+                <p className="text-gray-400 text-xs font-medium whitespace-nowrap">Panel de Control</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Info del bot — solo cuando expandido */}
+        {expanded && restaurante && (
+          <div className="px-4 py-4 border-b border-gray-700 bg-gradient-to-r from-gray-800/50 to-transparent flex-shrink-0 overflow-hidden">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 min-w-[2.25rem] rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center">
+                <Bot className="w-4 h-4 text-blue-400" />
+              </div>
+              <div className="min-w-0 overflow-hidden">
+                <p className="text-white text-sm font-semibold truncate">
+                  {restaurante.nombre_bot || "Sin nombre"}
+                </p>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${botOnline ? "bg-green-500 animate-pulse" : "bg-red-500"}`} />
+                  <span className={`text-xs font-medium ${botOnline ? "text-green-400" : "text-red-400"}`}>
+                    {botOnline ? "Activo" : "Sin conexión"}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
-
-      {/* Navegación */}
-      <nav className="flex-1 px-2 py-6 bg-gradient-to-b from-transparent to-gray-800/30">
-        {isExpanded && (
-          <p className="text-gray-400 text-xs font-bold uppercase tracking-widest px-2 mb-4">Navegación</p>
         )}
-        <div className="space-y-2">
+
+        {/* Navegación */}
+        <nav className="flex-1 px-2 py-4 space-y-1 overflow-hidden">
+          {expanded && (
+            <p className="text-gray-500 text-xs font-bold uppercase tracking-widest px-2 mb-3 whitespace-nowrap">
+              Navegación
+            </p>
+          )}
+
           {navigation.map((item) => {
-            const isActive = pathname.startsWith(item.href);
-            const isConfigOpen = item.name === "Configuración" && pathname.startsWith("/configuracion");
-            const isItemActive = isActive || (item.name === "Configuración" && isConfigOpen);
-            const Icon = item.icon;
-            
+            const Icon    = item.icon;
+            const active  = isActive(item.href);
+            const configOpen = item.subItems && pathname.startsWith("/configuracion");
+
             return (
               <div key={item.name}>
                 <Link
                   href={item.href}
                   onClick={() => onClose?.()}
-                  className={`flex items-center ${isExpanded ? 'gap-3 px-3' : 'justify-center px-2'} py-3 rounded-2xl text-sm font-semibold transition-all duration-200 group ${
-                    isItemActive
+                  title={!expanded ? item.name : undefined}
+                  className={`
+                    flex items-center h-11 rounded-2xl px-3 gap-3
+                    transition-all duration-200 whitespace-nowrap overflow-hidden
+                    ${active
                       ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg border border-blue-500/50"
-                      : "text-gray-300 hover:text-white hover:bg-gray-700 hover:shadow-md"
-                  }`}
+                      : "text-gray-300 hover:text-white hover:bg-gray-700"}
+                  `}
                 >
-                  <Icon className={`h-5 w-5 flex-shrink-0 transition-all ${isItemActive ? "text-white drop-shadow-sm" : "text-gray-400 group-hover:text-white"}`} />
-                  {isExpanded && (
+                  <Icon className={`h-5 w-5 min-w-[1.25rem] flex-shrink-0 ${active ? "text-white" : "text-gray-400"}`} />
+                  {expanded && (
                     <>
-                      <span className={`truncate flex-1 ${isItemActive ? "text-white drop-shadow-sm" : ""}`}>{item.name}</span>
-                      {isItemActive && (
-                        <div className="ml-auto w-2 h-2 rounded-full bg-white shadow-md"></div>
-                      )}
+                      <span className="text-sm font-semibold flex-1">{item.name}</span>
+                      {active && <div className="w-2 h-2 rounded-full bg-white/80 flex-shrink-0" />}
                     </>
                   )}
                 </Link>
-                
-                {/* Sub-items - solo visibles cuando está expandido */}
-                {isExpanded && item.subItems && isConfigOpen && (
-                  <div className="ml-4 mt-1 space-y-1 border-l-2 border-blue-500/50 pl-4">
-                    {item.subItems.map((subItem) => {
-                      const isSubActive = pathname === subItem.href;
-                      const SubIcon = subItem.icon;
+
+                {/* Sub-items de Configuración */}
+                {expanded && item.subItems && configOpen && (
+                  <div className="ml-4 mt-1 space-y-0.5 border-l-2 border-blue-500/40 pl-3">
+                    {item.subItems.map((sub) => {
+                      const SubIcon   = sub.icon;
+                      const subActive = pathname === sub.href;
                       return (
                         <Link
-                          key={subItem.name}
-                          href={subItem.href}
+                          key={sub.name}
+                          href={sub.href}
                           onClick={() => onClose?.()}
-                          className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all ${
-                            isSubActive
-                              ? "bg-blue-600/30 text-blue-300 font-medium"
-                              : "text-gray-400 hover:text-gray-200 hover:bg-gray-700/50"
-                          }`}
+                          className={`
+                            flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all
+                            ${subActive
+                              ? "bg-blue-600/25 text-blue-300 font-medium"
+                              : "text-gray-400 hover:text-gray-200 hover:bg-gray-700/50"}
+                          `}
                         >
-                          <SubIcon className={`h-4 w-4 flex-shrink-0 ${isSubActive ? "text-blue-400" : "text-gray-500"}`} />
-                          <span>{subItem.name}</span>
+                          <SubIcon className={`h-4 w-4 flex-shrink-0 ${subActive ? "text-blue-400" : "text-gray-500"}`} />
+                          <span>{sub.name}</span>
                         </Link>
                       );
                     })}
@@ -179,23 +180,25 @@ export default function Sidebar({ isOpen, onClose }) {
               </div>
             );
           })}
-        </div>
-      </nav>
+        </nav>
 
-      {/* Logout */}
-      <div className="p-2 border-t border-gray-700 bg-gradient-to-t from-transparent to-gray-800/50">
-        <button
-          onClick={handleLogout}
-          className={`flex items-center ${isExpanded ? 'gap-3 px-3' : 'justify-center px-2'} w-full py-3 rounded-2xl text-sm font-medium text-gray-400 hover:text-red-400 hover:bg-red-900/30 transition-all duration-200 group border border-gray-700/50`}
-        >
-          <LogOut className="h-5 w-5 group-hover:scale-110 transition-transform flex-shrink-0" />
-          {isExpanded && <span>Cerrar sesión</span>}
-        </button>
+        {/* Divider */}
+        <div className="h-px bg-gray-700/50 mx-3 flex-shrink-0" />
+
+        {/* Logout */}
+        <div className="px-2 py-3 flex-shrink-0">
+          <button
+            onClick={handleLogout}
+            title={!expanded ? "Cerrar sesión" : undefined}
+            className="flex items-center h-11 w-full rounded-2xl px-3 gap-3 text-gray-400 hover:text-red-400 hover:bg-red-900/30 transition-all duration-200 whitespace-nowrap overflow-hidden"
+          >
+            <LogOut className="h-5 w-5 min-w-[1.25rem] flex-shrink-0" />
+            {expanded && <span className="text-sm font-medium">Cerrar sesión</span>}
+          </button>
+        </div>
       </div>
-    </div>
     </>
   );
 }
 
-// Export mobile toggle function for PanelLayout
 export { Sidebar };
