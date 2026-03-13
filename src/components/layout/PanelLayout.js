@@ -7,7 +7,7 @@ import Sidebar from "./Sidebar";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { Menu } from "lucide-react";
 
-export default function PanelLayout({ children }) {
+export default function PanelLayout({ children, pedidosNuevos = 0 }) {
   const router = useRouter();
   const [isAuth,         setIsAuth]         = useState(false);
   const [mounted,        setMounted]        = useState(false);
@@ -29,9 +29,7 @@ export default function PanelLayout({ children }) {
             <Skeleton className="w-48 h-8 rounded-lg" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[...Array(4)].map((_, i) => (
-              <Skeleton key={i} className="h-24 rounded-2xl" />
-            ))}
+            {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-24 rounded-2xl" />)}
           </div>
           <Skeleton className="h-64 rounded-2xl" />
         </div>
@@ -44,24 +42,25 @@ export default function PanelLayout({ children }) {
       <Sidebar
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
+        pedidosNuevos={pedidosNuevos}
       />
 
-      {/* Botón hamburguesa solo mobile */}
-      <button
-        onClick={() => setMobileMenuOpen((o) => !o)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-3 bg-gray-800 border border-gray-700 rounded-2xl text-gray-300 hover:text-white hover:bg-gray-700 transition-all shadow-lg"
-      >
-        <Menu className="w-5 h-5" />
-      </button>
+      {/* Botón hamburguesa mobile — visible solo cuando sidebar cerrado */}
+      {!mobileMenuOpen && (
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          className="lg:hidden fixed top-4 left-4 z-50 p-3 bg-gray-800 border border-gray-700 rounded-2xl text-gray-300 hover:text-white hover:bg-gray-700 transition-all shadow-lg"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+      )}
 
-      {/* Contenido — margen izquierdo fijo para sidebar colapsado (w-16 + left-4 + gap ~24) */}
       <main className="flex-1 overflow-y-auto lg:ml-24 transition-all duration-300">
-        <div className="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto animate-fade-in">
-          {/* Header mobile */}
-          <div className="lg:hidden mb-6">
-            <h1 className="text-2xl font-bold text-white">Panel de Control</h1>
+        <div className="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto">
+          {/* Padding top en mobile para no tapar el botón hamburguesa */}
+          <div className="pt-14 lg:pt-0">
+            {children}
           </div>
-          {children}
         </div>
       </main>
     </div>
