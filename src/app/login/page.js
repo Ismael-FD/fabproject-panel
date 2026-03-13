@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import { setToken } from "@/lib/auth";
-import { ArrowRight, Eye, EyeOff } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, AlertCircle } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -134,8 +134,9 @@ export default function LoginPage() {
               </div>
 
               {error && (
-                <div className="p-4 rounded-2xl bg-red-900/30 border border-red-700 text-red-300 text-sm font-medium animate-slide-up">
-                  {error}
+                <div className="p-4 rounded-2xl bg-red-900/30 border border-red-700 text-red-300 text-sm font-medium flex items-start gap-2">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                  <span>{error}</span>
                 </div>
               )}
 
