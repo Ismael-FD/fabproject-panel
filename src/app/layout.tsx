@@ -2,7 +2,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata = {
-  title: "FaChat - Panel",
+  title: "Panel - FaChat",
   description: "Panel de administración para FaChat",
 };
 
